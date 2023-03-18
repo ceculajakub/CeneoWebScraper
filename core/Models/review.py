@@ -1,4 +1,4 @@
-from helpers import extract
+from core.helpers import extract
 
 
 class Review:

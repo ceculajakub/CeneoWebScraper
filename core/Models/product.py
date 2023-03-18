@@ -1,7 +1,7 @@
 import json
 import requests # TODO: fix pip direct import
 from bs4 import BeautifulSoup
-from review import Review
+from core.Models.review import Review
 
 class Product:
     def __init__(self, id, name, reviews):
