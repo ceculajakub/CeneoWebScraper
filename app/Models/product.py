@@ -1,5 +1,5 @@
 import json
-import pip._vendor.requests # TODO: fix pip direct import
+import requests # TODO: fix pip direct import
 from bs4 import BeautifulSoup
 from review import Review
 
@@ -33,7 +33,7 @@ class Product:
             self.reviews.append(review)
 
     def extract(self):
-        stream = pip._vendor.requests.get("https://www.ceneo.pl/{}#tab=reviews").format(self.id)
+        stream = requests.get("https://www.ceneo.pl/{}#tab=reviews").format(self.id)
         page_number = 2 # First iteration scrapes first page of reviews so our parameter starts from 2 
         while stream:
             page = BeautifulSoup(stream.text, "html.parser")
@@ -41,7 +41,7 @@ class Product:
 
             for review in reviews:
                 self.reviews.append(Review().extractReview(review).mapReview)
-            stream = pip._vendor.requests.get("https://www.ceneo.pl/{}/opinie-".format(self.productId)+str(page_number), allow_redirects=False)
+            stream = requests.get("https://www.ceneo.pl/{}/opinie-".format(self.productId)+str(page_number), allow_redirects=False)
             if stream.status_code == 200: # OK
                 page_number +=1
             else:
