@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="../static/datatables.min.css" rel="stylesheet"/>
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Merriweather:300,300italic,400,400italic,700,700italic,900,900italic%7CDroid+Serif:400,400italic,700,700italic%7CInconsolata:400,700">
+    <title>Ceneo Web Scraper</title>
+</head>
+
+<body>
+    <nav class="container navigation navbar navbar-expand-lg navbar-light ">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('index') }}">STRONA GŁÓWNA</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('extractProduct') }}">EKSTRAKCJA OPINII</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('productsList') }}">LISTA PRODUKTÓW</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('author') }}">O AUTORZE</a>
+                </li>
+                <li class="nav-item">
+                    <img class="cws-icon" src="../static/logo-ceneo-simple-orange.svg"">
+                    </li>
+                </ul>
+            </div>
+        </nav>
+                    <div class=" container">
+                    <div class="row">
+                        <div class="col-3">
+                            {% block left %}
+
+                            {% endblock left %}
+                        </div>
+                        <div class="">
+                            {% block middle %}
+                            {% endblock middle %}
+                        </div>
+                    </div>
+        </div>
+        <footer class="footer">
+            <div class="text-center footer-content p-3">
+                © 2023 Jakub Cecuła
+            </div>
+        </footer>
+
+        {% block scripts %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+        <script src="../static/datatables.min.js"></script>
+        
+        <script>
+        $(document).ready( function () {
+            $("#reviews").DataTable();
+        } );
+        </script>
+        {% endblock scripts %}
+</body>
+
+</html>

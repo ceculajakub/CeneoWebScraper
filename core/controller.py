@@ -1,4 +1,5 @@
 from os import listdir
+from flask import redirect, render_template, request, url_for
 from core.Models.product import Product
 from core import app
 
@@ -6,26 +7,36 @@ from core import app
 
 @app.route("/")
 def index():
-    return "Hello World"
+    return render_template('index.html.jinja')
 
 @app.route('/author')
 def author():
-    return "Author"
+    return render_template('author.html.jinja')
 
-@app.route('/extractProduct')
+@app.route('/extractProduct', methods = ['GET', 'POST'])
 def extractProduct():
-    return "Product"
+    if request.method == 'POST':
+        id = request.form.get('id')
+        product = Product(id)
+        product.get_name()
+        if product.name is not None:
+            product.extract()
+            product.write_json()
+            return redirect(url_for('product', id = id))
+        error = "Kod produktu jest niepoprawny. Sprawdź poprawność wpisanego kodu (znaki specjalnie nie są dozwolone)." # #HACK Special characters forbidden for security purposes
+        return render_template('extractProduct.html.jinja', error=error)
+    return render_template('extractProduct.html.jinja')
 
 @app.route('/productsList')
 def productsList():
-    model = [product.split('.')[0] for product in listdir("app/products")]
-    return "ProductsList(model)"
+    model = [product.split('.')[0] for product in listdir("core/Mocks")]
+    return render_template('productsList.html.jinja', products = model)
 
 
 @app.route('/product/<id>')
 def product(id):
-    product = Product(id)
-    product.read_json()
-    return "Product"
+    model = Product(id)
+    model.read_json()
+    return render_template('product.html.jinja', product = model)
 
 

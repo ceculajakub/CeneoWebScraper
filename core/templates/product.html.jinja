@@ -1,0 +1,47 @@
+{% extends "layout.html.jinja" %}
+
+{% block middle %}
+<h2>{{product.name}}</h2>
+<table class="table table-stripped" id='reviews'>
+<thead>
+<th>id</th>
+<th>author</th>
+<th>reference</th>
+<th>stars</th>
+<th>is_purchased</th>
+<th>review_date</th>
+<th>purchase_date</th>
+<th>positive</th>
+<th>negative</th>
+<th>content</th>
+<th>assets</th>
+<th>drawbacks</th>
+</thead>
+<tbody></tbody>
+</table>
+{% endblock middle %}
+
+
+{%block scripts%}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>
+    $('#reviews').DataTable( {
+    data: {{product.reviews}},
+    columns: [
+        { data: 'id' },
+        { data: 'author' },
+        { data: 'reference' },
+        { data: 'stars' },
+        { data: 'is_purchased' },
+        { data: 'review_date' },
+        { data: 'purchase_date' },
+        { data: 'positive' },
+        { data: 'negative' },
+        { data: 'content' },
+        { data: 'assets' },
+        { data: 'drawbacks' }
+    ]
+});
+    </script>
+{%endblock scripts%}
