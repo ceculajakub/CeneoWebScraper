@@ -1,34 +1,39 @@
 {% extends "layout.html.jinja" %}
 
 {% block middle %}
-<h2>{{product.name}}</h2>
+<link href="../static/datatables.min.css" rel="stylesheet" />
+
+<h2><a class="link-title" href={{ceneo}}>{{product.name}}</a></h2>
 <table class="table table-stripped" id='reviews'>
-<thead>
-<th>id</th>
-<th>author</th>
-<th>reference</th>
-<th>stars</th>
-<th>is_purchased</th>
-<th>review_date</th>
-<th>purchase_date</th>
-<th>positive</th>
-<th>negative</th>
-<th>content</th>
-<th>assets</th>
-<th>drawbacks</th>
-</thead>
-<tbody></tbody>
+    <thead>
+        <th>id</th>
+        <th>Autor</th>
+        <th>Poleca</th>
+        <th>Ocena</th>
+        <th>Potwierdzona zakupem</th>
+        <th>Data publikacji</th>
+        <th>Data zakupu</th>
+        <th>Pozytywne</th>
+        <th>Negatywne</th>
+        <th>Treść</th>
+        <th>Zalety</th>
+        <th>Wady</th>
+    </thead>
+    <tbody></tbody>
 </table>
 {% endblock middle %}
 
 
 {%block scripts%}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script>
-    $('#reviews').DataTable( {
-    data: {{product.reviews}},
-    columns: [
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="../static/datatables.min.js"></script>
+
+<script>
+
+    $('#reviews').DataTable({
+        dom: 'Bfrtip',
+        data: {{ product.reviews }},
+        columns: [
         { data: 'id' },
         { data: 'author' },
         { data: 'reference' },
@@ -41,7 +46,23 @@
         { data: 'content' },
         { data: 'assets' },
         { data: 'drawbacks' }
-    ]
+    ],
+        buttons: [{
+            extend: 'csv',
+            charset: 'UTF-8',
+            fieldSeparator: '\t',
+            bom: true
+        }, 'excel', {
+            text: 'JSON',
+            action: function (e, dt, button, config) {
+                var data = dt.buttons.exportData();
+
+                $.fn.dataTable.fileSave(
+                    new Blob([JSON.stringify(data)]),
+                    'Export.json'
+                );
+            }
+        }]
 });
-    </script>
+</script>
 {%endblock scripts%}

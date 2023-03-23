@@ -1,10 +1,56 @@
 {% extends "layout.html.jinja" %}
 
 {% block middle %}
-    <h2>Produkty</h2>
-    <ul class="list-group">
-        {% for product in products%}
-            <li class="list-group-item"><a href="{{ url_for('product', id=product) }}">{{product}}</a></li>
-        {% endfor %}
-    </ul>
+<link href="../static/datatables.min.css" rel="stylesheet" />
+
+<h2>Lista produktów</h2>
+<table class="table table-stripped" id='products'>
+    <thead>
+        <th>Id</th>
+        <th>Nazwa</th>
+        <th>Liczba opinii</th>
+        <th>Liczba wad</th>
+        <th>Liczba zalet</th>
+        <th>Średnia ocena</th>
+    </thead>
+    <tbody></tbody>
+</table>
 {% endblock middle %}
+
+
+{%block scripts%}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script src="../static/datatables.min.js"></script>
+
+<script>
+
+    $('#products').DataTable({
+        dom: 'Bfrtip',
+        data: {{ products }},
+        columns: [
+        { title: 'id' },
+        { title: 'name'},
+        { title: 'reviews_counted' },
+        { title: 'drawbacks_counted' },
+        { title: 'assets_counted' },
+        { title: 'average_stars' }
+    ],
+        buttons: [{
+            extend: 'csv',
+            charset: 'UTF-8',
+            fieldSeparator: '\t',
+            bom: true
+        }, 'excel', {
+            text: 'JSON',
+            action: function (e, dt, button, config) {
+                var data = dt.buttons.exportData();
+
+                $.fn.dataTable.fileSave(
+                    new Blob([JSON.stringify(data)]),
+                    'Export.json'
+                );
+            }
+        }]
+});
+</script>
+{%endblock scripts%}

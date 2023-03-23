@@ -23,20 +23,26 @@ def extractProduct():
             product.extract()
             product.write_json()
             return redirect(url_for('product', id = id))
-        error = "Kod produktu jest niepoprawny. Sprawdź poprawność wpisanego kodu (znaki specjalnie nie są dozwolone)." # #HACK Special characters forbidden for security purposes
-        return render_template('extractProduct.html.jinja', error=error)
+        error = "&#9888; Kod produktu jest niepoprawny. Sprawdź poprawność wpisanego kodu (znaki specjalnie nie są dozwolone)." # #HACK Special characters forbidden for security purposes
+        return render_template('extractProduct.html.jinja', error = error)
     return render_template('extractProduct.html.jinja')
 
 @app.route('/productsList')
 def productsList():
     model = [product.split('.')[0] for product in listdir("core/Mocks")]
-    return render_template('productsList.html.jinja', products = model)
+    results = []
+
+    for p_id in model:
+        result = Product(p_id)
+        result.read_json()
+        result.stats_counter()
+        results.append(result)
+
+    return render_template('productsList.html.jinja', products = results)
 
 
 @app.route('/product/<id>')
 def product(id):
     model = Product(id)
     model.read_json()
-    return render_template('product.html.jinja', product = model)
-
-
+    return render_template('product.html.jinja', product = model, ceneo = "https://www.ceneo.pl/{}#tab=reviews".format(model.id))

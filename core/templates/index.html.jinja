@@ -1,5 +1,54 @@
 {% extends "layout.html.jinja" %}
 
 {% block middle %}
-    <h2>Opis projektu</h2>
+<div class="container">
+    <div class="section">
+        <h2>Cel aplikacji</h2>
+
+        <p>Aplikacja CeneoWebScraper została stworzona w celu ułatwienia potencjalnym klientom sklepów internetowych
+            współpracujących z witryną Ceneo procesu wyboru produktu,
+            oraz poznania opinii innych użytkowników posiadających dany produkt. Najważniejszymi aspektami przy
+            realizacji tego projektu, była przystępność oraz skondensowanie i graficzna
+            prezentacja uśrednionej oceny i wrażeń z użytkownia produktu.</p>
+    </div>
+
+    <div class="section">
+        <h2>Opis działania aplikacji</h2>
+
+        <p>Mechanizm funkcjonalności opiera się na technice "web scrapingu", czyli zczytywania kluczowych informacji z
+            innych witryn bezpośrednio z ich dostępnego kodu źródłowego.
+            Wewnątrz struktur aplikacji, dane te są dostosowywane do odpowiedniego formatu i przypisywane do stworzonych
+            obiektów. Następnie używając odpowiednich bibiliotek
+            prezentuje dane w przyjaznej dla użytkownika formie, aby ułatwić mu analizę danego produktu przed
+            potencjalnym zakupem.</p>
+    </div>
+    <div class="section">
+        <h2>Zastosowane biblioteki</h2>
+        <p>
+        <ul class ="description-list">
+            <li>Flask</li>
+            <li>Beautiful Soup</li>
+            <li>Biblioteka umożliwiająca tworzenie generycznych widoków/template frontendowych
+                Jinja2.</li>
+            <li>Mniej istotnym, lecz kluczowym narzędziem była też biblioteka requests, umożliwiająca proste wysyłanie
+                komunikatów HTTP, w celu pozyskania danych do parsowania.</li>
+            <li>Bootstrap</li>
+            <li>DataTables</li>
+            <li>Chart.js</li>
+        </ul>
+        </p>
+    </div>
+    <div class="section">
+        <h2>Zastosowane podejścia</h2>
+        <p>Projekt został zrealizowany w myśl obiektowego paradygmatu programowania. Priorytetem był solidny i
+            niezawodny mechanizm parsowania przychodzących danych. Pod względem
+            technik pisania kodu, najważniejsza było wykorzystanie obiektowości, oraz rozdzielenie warstwy logicznej od
+            warstwy wizualnej, w celu poprawienia czytelności i bezpieczeństwa kodu.
+            Projekt miał zostać stworzony w sposób generyczny umożliwiający dalszą rozbudowę, z naciskiem na
+            zastosowanie zasady DRY, w celu uniknięcia powtarzania się podobnych, bądź identycznych funkcjonalności.
+        </p>
+    </div>
+
+
+</div>
 {% endblock middle %}
