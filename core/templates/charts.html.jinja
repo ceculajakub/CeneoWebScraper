@@ -1,0 +1,79 @@
+{% extends "layout.html.jinja" %}
+
+
+{% block middle %}
+<h1>WYKRESY</h1>
+<div class="container mb-5">
+    <a type="button" class="btn charts-button" href="{{url_for('product', id=product.id)}}">Wróć dostrony produktu</a>
+</div>
+<div class="charts-container mb-5">
+    <canvas id="PieChart"></canvas>
+</div>
+<div class="charts-container-bar mt-5">
+    <canvas id="BarChart"></canvas>
+</div>
+
+{% endblock middle %}
+
+{%block scripts%}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+<script>
+
+    const pie_chart = document.getElementById('PieChart');
+    Chart.defaults.font.size = 20;
+
+    new Chart(pie_chart, {
+        type: 'pie',
+        data: {
+            labels: ["Poleca", "Nie poleca", "Neutralny"],
+            datasets: [{
+                label: 'Ilość',
+                backgroundColor: ['#ff6400', '#c23728', '#dedad2'],
+                data: [{{ product.positive_counted }}, {{ product.negative_counted }}, {{ product.neutral_counted }}],
+      }]},
+        options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Udział rekomendacji w ogólnej liczbie opinii',
+                align: 'center',
+                font: {
+                    weight: 'bold',
+                    size: '24px',
+                },
+                fullSize: true,
+            }
+        }
+    }
+    })
+    const bar_chart = document.getElementById('BarChart');
+
+    new Chart(bar_chart, {
+        type: 'bar',
+        data: {
+            labels: ['Ocena: 0', 'Ocena: 0.5', 'Ocena: 1', 'Ocena: 1.5', 'Ocena: 2', 'Ocena: 2.5', 'Ocena: 3', 'Ocena: 3.5', 'Ocena: 4', 'Ocena: 4.5', 'Ocena: 5'],
+            datasets: [{
+                label: 'Ilość',
+                backgroundColor: '#ff6400',
+                data: [{{ product.stars_list.count(0) }}, {{ product.stars_list.count(0.5) }},{{ product.stars_list.count(1) }}, {{ product.stars_list.count(1.5) }}, {{ product.stars_list.count(2) }}, {{ product.stars_list.count(2.5) }}, {{ product.stars_list.count(3) }}, {{ product.stars_list.count(3.5) }}, {{ product.stars_list.count(4) }}, {{ product.stars_list.count(4.5) }}, {{ product.stars_list.count(5) }}]
+            }]
+        },
+        options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Liczba opinii z daną ilością gwiazdek',
+                align: 'center',
+                font: {
+                    weight: 'bold',
+                    size: '24px',
+                },
+                fullSize: true,
+
+            }
+        }
+        }
+    });
+
+</script>
+{%endblock scripts%}

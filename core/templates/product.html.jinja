@@ -2,9 +2,10 @@
 
 {% block middle %}
 <link href="../static/datatables.min.css" rel="stylesheet" />
+<h1><a class="link-title" href={{ceneo}}>{{product.name}}</a></h1>
+<a type ="button" class="btn mb-5 mt-5 charts-button" href="{{url_for('charts', id=product.id)}}">Wykresy</a>
 
-<h2><a class="link-title" href={{ceneo}}>{{product.name}}</a></h2>
-<table class="table table-stripped" id='reviews'>
+<table class="table table-bordered table-striped table-responsive" id='reviews'>
     <thead>
         <th>id</th>
         <th>Autor</th>
@@ -19,6 +20,22 @@
         <th>Zalety</th>
         <th>Wady</th>
     </thead>
+    <tfoot class="show-footer-top">
+        <tr>
+            <th>id</th>
+            <th>Autor</th>
+            <th>Poleca</th>
+            <th>Ocena</th>
+            <th>Potwierdzona zakupem</th>
+            <th>Data publikacji</th>
+            <th>Data zakupu</th>    
+            <th>Pozytywne</th>
+            <th>Negatywne</th>
+            <th>Treść</th>
+            <th>Zalety</th>
+            <th>Wady</th>
+        </tr>
+    </tfoot>
     <tbody></tbody>
 </table>
 {% endblock middle %}
@@ -29,10 +46,27 @@
 <script src="../static/datatables.min.js"></script>
 
 <script>
+    $(document).ready(function () {
+        $('#reviews tfoot th').each(function () {
+            var title = $(this).text();
+            $(this).html('<input type="text" style="width: 70px; text-align: center;" placeholder="Szukaj" />');
+        });
+        $('#reviews').DataTable({
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var that = this;
 
-    $('#reviews').DataTable({
-        dom: 'Bfrtip',
-        data: {{ product.reviews }},
+                        $('input', this.footer()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that.search(this.value).draw();
+                            }
+                        });
+                    });
+            },
+            dom: 'Bfrtip',
+            data: {{ product.reviews }},
         columns: [
         { data: 'id' },
         { data: 'author' },
@@ -63,6 +97,7 @@
                 );
             }
         }]
+    });
 });
 </script>
 {%endblock scripts%}

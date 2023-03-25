@@ -31,14 +31,14 @@ def extractProduct():
 def productsList():
     model = [product.split('.')[0] for product in listdir("core/Mocks")]
     results = []
-
     for p_id in model:
         result = Product(p_id)
         result.read_json()
         result.stats_counter()
-        results.append(result)
+        stats_model = result.stats_model()
+        results.append(stats_model)
 
-    return render_template('productsList.html.jinja', products = results)
+    return render_template('productsList.html.jinja', products = str(results))
 
 
 @app.route('/product/<id>')
@@ -46,3 +46,11 @@ def product(id):
     model = Product(id)
     model.read_json()
     return render_template('product.html.jinja', product = model, ceneo = "https://www.ceneo.pl/{}#tab=reviews".format(model.id))
+
+@app.route('/charts/<id>')
+def charts(id):
+    model = Product(id)
+    model.read_json()
+    model.stats_counter()
+    stats_model = model.stats_model()
+    return render_template('charts.html.jinja', product = stats_model)

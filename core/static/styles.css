@@ -131,3 +131,33 @@ ul{
 .link-title:hover{
 	color: #ff6400;
 }
+
+.show-footer-top{
+  display: table-row-group 
+}
+
+.charts-button{
+  background-color: #7e9181;
+  color: white;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  min-width: 3vw;
+  min-height: 3vh;
+}
+
+.charts-button:hover {
+  background-color: #ff6400;
+  color: white;
+}
+
+.charts-container{
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+}
+.charts-container-bar{
+  width: 800px;
+  height: 800px;
+  margin: 0 auto;
+}
+

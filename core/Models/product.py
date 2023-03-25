@@ -6,13 +6,18 @@ from core.helpers import extract
 
 
 class Product:
-    def __init__(self, id, name="",  reviews_counted=0, drawbacks_counted=0, assets_counted=0, average_stars=0.0, reviews=[]):
+    def __init__(self, id, name= None,  reviews_counted=0, drawbacks_counted=0, assets_counted=0, average_stars=0.0, positive_counted = 0, negative_counted = 0, neutral_counted = 0, stars_list = [], reviews=[]):
         self.id = id
         self.name = name
         self.reviews_counted = reviews_counted
         self.drawbacks_counted = drawbacks_counted
         self.assets_counted = assets_counted
         self.average_stars = average_stars
+        self.positive_counted = positive_counted
+        self.negative_counted = negative_counted
+        self.neutral_counted = neutral_counted
+        self.stars_list = stars_list
+
         self.reviews = reviews.copy()
 
     # mapping product to dictionary version
@@ -34,7 +39,7 @@ class Product:
         with open(f"core/Mocks/{self.id}.json", "r", encoding="UTF-8") as result_file:
             result_product = json.load(result_file)
         result_file.close()
-        self.name = result_product['name']
+        self.name = str(result_product['name'])
         reviews = result_product['reviews']
         for review in reviews:
             self.reviews.append(review)
@@ -70,14 +75,38 @@ class Product:
         return f"id: {self.id}<br>name: {self.name}<br>reviews<br><br>" + "<br><br>".join(str(review) for review in self.reviews)
 
     def __repr__(self) -> str:
-        return f"Product(id={self.id}, name={self.name}, reviews=[" + ", ".join(review.__repr__() for review in self.reviews) + "])"
+        return f"Product(id={self.id}, name={self.name}, reviews_counted={self.reviews_counted}, drawbacks_counted={self.drawbacks_counted}, assets_counted={self.assets_counted}, average_stars={self.average_stars}, positive_counted = {self.positive_counted}, negative_counted = {self.negative_counted}, neutral_counted = {self.neutral_counted}, stars_list = {self.stars_list,}  reviews=[" + ", ".join(review.__repr__() for review in self.reviews) + "])"
 
     def stats_counter(self):
         self.reviews_counted = len(self.reviews)
+        self.stars_list.clear()
         for review in self.reviews:
             if review['drawbacks'] != None:
                 self.drawbacks_counted += len(review['drawbacks'])
             if review['assets'] != None:
                 self.assets_counted += len(review['assets'])
             self.average_stars += review['stars']
+            if review['reference'] == "Tak":
+                self.positive_counted += 1
+            elif review['reference'] == "Nie":
+                self.negative_counted += 1
+            else:
+                self.neutral_counted += 1 
+            self.stars_list.append(review['stars'])
+
         self.average_stars /= self.reviews_counted
+
+    def stats_model(self):
+        # Return a dictionary containing statistics of the current object.
+        return {
+            "id": self.id,
+            "name": self.name,
+            "reviews_counted": self.reviews_counted,
+            "drawbacks_counted": self.drawbacks_counted,
+            "assets_counted": self.assets_counted,
+            "average_stars": round(self.average_stars, 2),
+            "positive_counted": self.positive_counted,
+            "negative_counted": self.negative_counted,
+            "neutral_counted": self.neutral_counted,
+            "stars_list": self.stars_list
+        }

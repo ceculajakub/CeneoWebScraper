@@ -3,8 +3,8 @@
 {% block middle %}
 <link href="../static/datatables.min.css" rel="stylesheet" />
 
-<h2>Lista produktów</h2>
-<table class="table table-stripped" id='products'>
+<h1>LISTA PRODUKTÓW</h1>
+<table class="table table-bordered table-striped table-responsive" id='products'>
     <thead>
         <th>Id</th>
         <th>Nazwa</th>
@@ -28,12 +28,17 @@
         dom: 'Bfrtip',
         data: {{ products }},
         columns: [
-        { title: 'id' },
-        { title: 'name'},
-        { title: 'reviews_counted' },
-        { title: 'drawbacks_counted' },
-        { title: 'assets_counted' },
-        { title: 'average_stars' }
+        { data: 'id' },
+        {
+            data: 'name',
+            render: function(data, type, row){
+                return '<a href="http://127.0.0.1:5000/product/'+row.id+'" style="  color: #ff6400; text-decoration: none;">'+data+'</a>';
+            }
+        },
+        { data: 'reviews_counted' },
+        { data: 'drawbacks_counted' },
+        { data: 'assets_counted' },
+        { data: 'average_stars' }
     ],
         buttons: [{
             extend: 'csv',
