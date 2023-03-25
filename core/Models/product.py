@@ -6,7 +6,7 @@ from core.helpers import extract
 
 
 class Product:
-    def __init__(self, id, name= None,  reviews_counted=0, drawbacks_counted=0, assets_counted=0, average_stars=0.0, positive_counted = 0, negative_counted = 0, neutral_counted = 0, stars_list = [], reviews=[]):
+    def __init__(self, id, name=None,  reviews_counted=0, drawbacks_counted=0, assets_counted=0, average_stars=0.0, positive_counted=0, negative_counted=0, neutral_counted=0, stars_list=[], reviews=[]):
         self.id = id
         self.name = name
         self.reviews_counted = reviews_counted
@@ -91,7 +91,7 @@ class Product:
             elif review['reference'] == "Nie":
                 self.negative_counted += 1
             else:
-                self.neutral_counted += 1 
+                self.neutral_counted += 1
             self.stars_list.append(review['stars'])
 
         self.average_stars /= self.reviews_counted
